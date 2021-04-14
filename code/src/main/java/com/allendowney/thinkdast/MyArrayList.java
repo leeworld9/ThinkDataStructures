@@ -45,7 +45,16 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public boolean add(T element) {
 		// TODO: FILL THIS IN!
-		return false;
+		if (size >= array.length) {
+			// make a bigger array and copy over the elements
+			@SuppressWarnings("unchecked")
+			T[] bigger = (T[]) new Object[array.length * 2];
+			System.arraycopy(array, 0, bigger, 0, array.length);
+			array = bigger;
+		}
+		array[size] = element;
+		size++;
+		return true;
 	}
 
 	@Override
@@ -111,7 +120,13 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public int indexOf(Object target) {
 		// TODO: FILL THIS IN!
-		return -1;
+		//equals 에서 null 처리를 해주고 있음
+		for (int i = 0; i < size; i++) {
+			if (equals(target, array[i])) {
+				return i;
+			}
+		}
+		return (-1);
 	}
 
 	/** Checks whether an element of the array is the target.
@@ -119,7 +134,7 @@ public class MyArrayList<T> implements List<T> {
 	 * Handles the special case that the target is null.
 	 *
 	 * @param target
-	 * @param object
+	 * @param element
 	 */
 	private boolean equals(Object target, Object element) {
 		if (target == null) {
@@ -182,7 +197,12 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public T remove(int index) {
 		// TODO: FILL THIS IN!
-		return null;
+		T tmp = get(index);
+		for(int i = index ; i < size-1 ; i++)
+			array[i] = array [i+1];
+		array[size-1] = null;
+		size--;
+		return tmp;
 	}
 
 	@Override
@@ -202,7 +222,11 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public T set(int index, T element) {
 		// TODO: FILL THIS IN!
-		return null;
+		if (index < 0 || index >= size)
+			throw new IndexOutOfBoundsException();
+		T tmp = get(index);
+		array[index] = element;
+		return tmp;
 	}
 
 	@Override
